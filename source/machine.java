@@ -1,15 +1,18 @@
-public class machine {
+public class Machine {
 
   private String number_ip;
-  public machine()
+  public Machine()
   {
     this.number_ip = number_ip;
   }
 
 
-  public void convert(String ip){
-    String[4] aux = ip.split(".");
-    System.out.println(aux[0]+"."+aux[1]+"."+aux[2]+"."+aux[3]+"."+aux[4]);
+  public int convert(String ip){
+    String aux[] = ip.split(".");
+
+    int parte1 = String.valueOf(aux[0],2);
+
+    this.number_ip = parte1;
 
   }
 
