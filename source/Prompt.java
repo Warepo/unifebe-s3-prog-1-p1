@@ -6,16 +6,13 @@ public class Prompt {
     {
         Scanner reader = new Scanner(System.in);
 
-        IP data = new IP();
-
         System.out.print("Entre com o IP: ");
 
-        String ip = reader.next();
+        IP ip = new IP(reader.next());
 
         System.out.println();
 
-        String a = data.parse(ip);
-        System.out.println(a);
+        System.out.println("Este IP em binário é: " + ip.getBase2());
     }
 
 }

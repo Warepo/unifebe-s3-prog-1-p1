@@ -71,6 +71,14 @@ public class IP {
     }
 
     /**
+     * Question 3.a
+     */
+    private String getBase2()
+    {
+        return this.ip_array_base2;
+    }
+
+    /**
      * Question 3.b
      *
      * @return Returns the IP class, A, B or C.
