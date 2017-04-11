@@ -9,8 +9,8 @@ public class Prompt{
 
     String ip = read.next();
 
-    int result = data.convert(ip);
-    System.out.println(result);
+    String a = data.parse(ip);
+    System.out.println(a);
 
   }
 
