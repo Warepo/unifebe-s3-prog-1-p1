@@ -1,17 +1,21 @@
 import java.util.Scanner;
-public class Prompt{
 
-  public static void main (String[] args){
-    Scanner read = new Scanner(System.in);
-    Machine data = new Machine();
+public class Prompt {
 
-    System.out.println("Entre com o IP :\n");
+    public static void main (String[] args)
+    {
+        Scanner reader = new Scanner(System.in);
 
-    String ip = read.next();
+        IP data = new IP();
 
-    String a = data.parse(ip);
-    System.out.println(a);
+        System.out.print("Entre com o IP: ");
 
-  }
+        String ip = reader.next();
+
+        System.out.println();
+
+        String a = data.parse(ip);
+        System.out.println(a);
+    }
 
 }
