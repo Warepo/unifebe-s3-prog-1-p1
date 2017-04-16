@@ -1,4 +1,4 @@
-public class IP {
+public class IPv4 {
 
     private String ip_string = "";
     private String ip_array_base10[]; // decimal
@@ -7,7 +7,7 @@ public class IP {
     private int base = -1;
 	private String mask;
 
-    public IP(String ip)
+    public IPv4(String ip)
     {
         this.base = IP.getBase(ip);
 
@@ -48,7 +48,7 @@ public class IP {
 
         // Pattern regex = Pattern.compile("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$");
 
-        if(ip.matches("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$")) {
+        if (ip.matches("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$")) {
             base = 2;
         } else if (ip.matches("^([0-1]{8}\\.){3}[0-1]{8}$")) {
             base = 10;
