@@ -3,34 +3,35 @@ public class IP {
     private String ip_string = "";
     private String ip_array_base10[]; // decimal
     private String ip_array_base2[]; // binário
-    private String class = "";
+    private String mask_class = "";
     private int base = -1;
+	private String mask;
 
-    public IP(string)
+    public IP(String ip)
     {
-        this.base = IP.getBase(string);
+        this.base = IP.getBase(ip);
 
         if (this.base > -1) {
-            this.ip_string = string;
+            this.ip_string = ip;
 
             if (this.base == 10) {
-                this.ip_array_base10 = string.split("\\.");
-                this.ip_array_base2 = this.toBase2();
+                this.ip_array_base10 = ip.split("\\.");
+                this.ip_array_base2 = (String[]) this.toBase2();
             } else if (this.base == 2) {
-                this.ip_array_base2 = string.split("\\.");
-                this.ip_array_base10 = this.toBase10();
+                this.ip_array_base2 = ip.split("\\.");
+//                this.ip_array_base10 = this.toBase10();
             }
 
-            this.class = this.getClass();
+            this.mask_class = this.getClass();
 
             if (this.hasMask()) {
                 this.mask = this.getMask();
 
-                int defaultMask = this.getMaskByClass(this.class);
+                int defaultMask = this.getMaskByClass(this.mask_class);
 
                 if (this.mask != defaultMask) {
 
-                    System.err.println("A máscara de IP fornecida é inválida, a máscara correta é " + defaultMask + ".")
+                    System.err.println("A máscara de IP fornecida é inválida, a máscara correta é " + defaultMask + ".");
 
                 }
 
@@ -43,7 +44,7 @@ public class IP {
      */
     public static int getBase(String ip)
     {
-        String base = -1;
+        int base = -1;
 
         // Pattern regex = Pattern.compile("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$");
 
@@ -64,7 +65,7 @@ public class IP {
         String base2[] = new String[this.ip_array_base10.length];
 
         for (int x = 0; x < this.ip_array_base10.length; x++) {
-            base2[x] = String.format("%08d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(this.ip_array[x]))));
+            base2[x] = String.format("%08d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(this.ip_array_base2[x]))));
         }
 
         return base2;
@@ -73,7 +74,7 @@ public class IP {
     /**
      * Question 3.a
      */
-    private String getBase2()
+    String[] getBase2()
     {
         return this.ip_array_base2;
     }
@@ -88,7 +89,7 @@ public class IP {
         // this method solves #3
 
         String ip_class = "";
-        int classIndicators = this.ip_array_base2[0].substring(0, 2); // primeiros dois dígitos do IP binário
+        String classIndicators = this.ip_array_base2[0].substring(0, 2); // primeiros dois dígitos do IP binário
 
         switch(classIndicators) {
             // A
@@ -116,7 +117,7 @@ public class IP {
         return this.ip_string.matches(".+\\/\d+$");
     }
 
-    public boolean getMask()
+    public String getMask()
     {
         return this.ip_string.split("\\/")[1];
     }
