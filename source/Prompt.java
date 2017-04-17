@@ -12,9 +12,9 @@ public class Prompt {
 
         System.out.println();
 
-        System.out.println("Curiosidades sobre o IP de entrada.");
-        System.out.println("Classe: " + ip.getIPClass());
-        System.out.println("Este IP em binário é: " + ip.getBase2());
+        System.out.println("Curiosidades sobre o IP de entrada:");
+        System.out.println(" - Classe: " + ip.getIPClass());
+        System.out.println(" - Em binário: " + ip.getBase2());
     }
 
 }

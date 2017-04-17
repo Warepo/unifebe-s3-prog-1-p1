@@ -19,6 +19,8 @@ public class IPv4 {
                 this.ip_string = ip;
                 this.ip_array = ip.split("\\.");
 
+                System.out.println();
+
             } else if (this.base == 2) {
 
                 // this.ip_base2_array = ip.split("\\.");
@@ -68,23 +70,21 @@ public class IPv4 {
     /**
      * Question 3.a
      */
-    private Object toBase2()
+    public String getBase2()
     {
-        String base2[] = new String[this.ip_array.length];
+        if (this.ip_base2_string == null)
+        {
+            String base2[] = new String[this.ip_array.length];
 
-        for (int x = 0; x < this.ip_array.length; x++) {
-            base2[x] = String.format("%08d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(this.ip_array[x]))));
+            for (int x = 0; x < this.ip_array.length; x++)
+            {
+                base2[x] = String.format("%08d", Integer.parseInt(Integer.toString(Integer.parseInt(this.ip_array[x]), 2)));
+            }
+
+            this.ip_base2_string = String.join(".", base2);
         }
 
-        return base2;
-    }
-
-    /**
-     * Question 3.a
-     */
-    String[] getBase2()
-    {
-        return this.ip_base2_array;
+        return this.ip_base2_string;
     }
 
     /**
@@ -97,7 +97,7 @@ public class IPv4 {
         // this method solves #3
 
         String ip_class = "";
-        String classIndicators = Integer.toString(Integer.parseInt(this.ip_array[0]), 2).substring(0, 2); // primeiros dois dígitos do IPv4 binário
+        String classIndicators = String.format("%08d", Integer.parseInt(Integer.toString(Integer.parseInt(this.ip_array[0]), 2))).substring(0, 2); // primeiros dois dígitos do IPv4 binário
 
         switch(classIndicators) {
             // A
