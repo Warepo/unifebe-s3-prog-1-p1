@@ -1,31 +1,28 @@
 public class IPv4 {
 
     private String ip_string; // decimal
-    private String ip_array[]; // decimal
+    private String address_array[]; // decimal
     private String ip_base2_string; // binário
-    private String ip_base2_array[]; // binário
+    private String address_base2_array[]; // binário
     private int base = -1;
     private String mask;
-    private String ip_class;
+    private String address_class;
 
     public IPv4(String ip)
     {
         this.base = IPv4.getBase(ip);
 
-        if (this.base > -1) {
-
-            if (this.base == 10) {
-
+        if (this.base > -1)
+        {
+            if (this.base == 10)
+            {
                 this.ip_string = ip;
-
-                System.out.println();
-
-            } else if (this.base == 2) {
-
-                // this.ip_base2_array = ip.split("\\.");
+            }
+            else if (this.base == 2)
+            {
+                // this.address_base2_array = ip.split("\\.");
                 System.err.println("O IPv4 de entrada deve ser escrito em base decimal.");
                 // return false;
-
             }
 
             if (this.ip_string != null)
@@ -34,21 +31,21 @@ public class IPv4 {
                 {
                     String ipSplit[] = ip.split("\\/");
 
-                    this.ip_array = ipSplit[0].split("\\.");
+                    this.address_array = ipSplit[0].split("\\.");
                     this.mask = ipSplit[1];
-                    this.ip_class = this.getIPClass();
+                    this.address_class = this.getAddressClass();
 
-
-                    String defaultMask = IPv4.getMaskByClass(this.ip_class);
+                    String defaultMask = IPv4.getMaskByClass(this.address_class);
 
                     if (this.mask != defaultMask)
                     {
                         System.err.println("A máscara de IPv4 fornecida (" + this.mask + ") é inválida, a máscara correta é " + defaultMask + ".");
                     }
-
-                } else {
-                    this.ip_array = ip.split("\\.");
-                    this.ip_class = this.getIPClass();
+                }
+                else
+                {
+                    this.address_array = ip.split("\\.");
+                    this.address_class = this.getAddressClass();
                 }
             }
         }
@@ -101,13 +98,14 @@ public class IPv4 {
     {
         if (this.ip_base2_string == null)
         {
-            String base2[] = new String[this.ip_array.length];
+            String base2[] = new String[this.address_array.length];
 
-            for (int x = 0; x < this.ip_array.length; x++)
+            for (int x = 0; x < this.address_array.length; x++)
             {
-                base2[x] = String.format("%08d", Integer.parseInt(Integer.toString(Integer.parseInt(this.ip_array[x]), 2)));
+                base2[x] = String.format("%08d", Integer.parseInt(Integer.toString(Integer.parseInt(this.address_array[x]), 2)));
             }
 
+            this.address_base2_array = base2;
             this.ip_base2_string = String.join(".", base2);
         }
 
@@ -115,43 +113,59 @@ public class IPv4 {
     }
 
     /**
+     * Question 5.b
+     */
+    public static String toBase10(String ip)
+    {
+        String ip_array[] = ip.split("\\.");
+        String newBase[] = new String[ip_array.length];
+
+        for (int x = 0; x < ip_array.length; x++)
+        {
+            newBase[x] = Integer.toString(Integer.valueOf(ip_array[x], 2));
+        }
+
+        return String.join(".", newBase);
+    }
+
+    /**
      * Question 3.b
      *
      * @return Returns the IPv4 class, A, B or C.
      */
-    public String getIPClass()
+    public String getAddressClass()
     {
         // this method solves #3
 
-        String ip_class = "";
-        String classIndicators = String.format("%08d", Integer.parseInt(Integer.toString(Integer.parseInt(this.ip_array[0]), 2))).substring(0, 2); // primeiros dois dígitos do IPv4 binário
+        String address_class = "";
+        String classIndicators = String.format("%08d", Integer.parseInt(Integer.toString(Integer.parseInt(this.address_array[0]), 2))).substring(0, 2); // primeiros dois dígitos do IPv4 binário
 
         switch(classIndicators) {
             // A
             case "00":
             case "01":
-                ip_class = "A";
+                address_class = "A";
                 break;
 
             // B
             case "10":
-                ip_class = "B";
+                address_class = "B";
                 break;
 
             // C
             case "11":
-                ip_class = "C";
+                address_class = "C";
                 break;
         }
 
-        return ip_class;
+        return address_class;
     }
 
-    public static String getMaskByClass(String ip_class)
+    public static String getMaskByClass(String address_class)
     {
         String mask = "";
 
-        switch(ip_class) {
+        switch(address_class) {
             case "A":
                 mask = "8";
                 break;
@@ -176,4 +190,31 @@ public class IPv4 {
         return this.mask;
     }
 
+    public String getSubNetwork(String subnet_mask)
+    {
+        String subnet = "";
+
+        // if (this.hasMask())
+        // {
+        IPv4 subip = new IPv4(subnet_mask);
+        String subip_base2_array[] = subip.getBase2().split("\\.");
+
+        for (int x = 0; x < this.address_base2_array.length; ++x)
+        {
+            for (int y = 0; y < this.address_base2_array[x].length(); ++y)
+            {
+                subnet += "" + (Integer.parseInt(this.address_base2_array[x].substring(y, y + 1)) * Integer.parseInt(subip_base2_array[x].substring(y, y + 1)));
+            }
+
+            subnet += ".";
+        }
+
+        // }
+        // else
+        // {
+        //     System.err.println("Não foi possível descobrir a sub-rede, pois este IP não possui máscara.");
+        // }
+
+        return subnet.replaceAll("\\.$", "");
+    }
 }
