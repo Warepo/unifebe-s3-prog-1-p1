@@ -15,7 +15,7 @@ public class Prompt {
         System.out.println();
 
         System.out.println("Curiosidades sobre o IP de entrada:");
-        System.out.println(" - Em binário: " + ip.getBase2());
+        System.out.println(" - Em binário: " + ip.toBase2());
         System.out.println(" - Máscara: " + ip.getMask());
         System.out.println(" - Classe: " + ip.getAddressClass());
 

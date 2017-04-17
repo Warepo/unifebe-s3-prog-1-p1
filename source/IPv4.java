@@ -6,52 +6,51 @@ public class IPv4 {
     private String address_array[]; // decimal
     private String ip_base2_string; // binário
     private String address_base2_array[]; // binário
-    private int base = -1;
     private String mask;
     private String address_class;
 
     public IPv4(String ip)
     {
-        this.base = IPv4.getBase(ip);
-
-        if (this.base > -1)
+        if (IPv4.isValid(ip))
         {
-            if (this.base == 10)
+            this.ip_string = ip;
+        }
+        else
+        {
+            // this.address_base2_array = ip.split("\\.");
+            System.err.println("O IPv4 de entrada deve ser escrito em base decimal.");
+            System.err.println("Respeitando o formato: 255.255.255.255.");
+            return;
+        }
+
+        if (this.ip_string != null)
+        {
+            if (this.hasMask())
             {
-                this.ip_string = ip;
+                String ipSplit[] = ip.split("\\/");
+
+                this.address_array = ipSplit[0].split("\\.");
+                this.mask = ipSplit[1];
+                this.address_class = this.getAddressClass();
+
+                String defaultMask = IPv4.getMaskByClass(this.address_class);
+
+                if (this.mask != defaultMask)
+                {
+                    System.err.println("A máscara de IPv4 fornecida (" + this.mask + ") é inválida, a máscara correta é " + defaultMask + ".");
+                }
             }
             else
             {
-                // this.address_base2_array = ip.split("\\.");
-                System.err.println("O IPv4 de entrada deve ser escrito em base decimal.");
-                System.err.println("Respeitando o formato: 255.255.255.255.");
-                return;
-            }
-
-            if (this.ip_string != null)
-            {
-                if (this.hasMask())
-                {
-                    String ipSplit[] = ip.split("\\/");
-
-                    this.address_array = ipSplit[0].split("\\.");
-                    this.mask = ipSplit[1];
-                    this.address_class = this.getAddressClass();
-
-                    String defaultMask = IPv4.getMaskByClass(this.address_class);
-
-                    if (this.mask != defaultMask)
-                    {
-                        System.err.println("A máscara de IPv4 fornecida (" + this.mask + ") é inválida, a máscara correta é " + defaultMask + ".");
-                    }
-                }
-                else
-                {
-                    this.address_array = ip.split("\\.");
-                    this.address_class = this.getAddressClass();
-                }
+                this.address_array = ip.split("\\.");
+                this.address_class = this.getAddressClass();
             }
         }
+    }
+
+    public String getMask()
+    {
+        return this.mask;
     }
 
     /**
@@ -63,9 +62,12 @@ public class IPv4 {
 
         // Pattern regex = Pattern.compile("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$");
 
-        if (ip.matches("^((\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5])))(\\/\\d+)?$")) {
+        if (IPv4.isValid(ip))
+        {
             base = 10;
-        } else if (ip.matches("^([0-1]{8}\\.){3}[0-1]{8}$")) {
+        }
+        else if (IPv4.isValidBinary(ip))
+        {
             base = 2;
         }
 
@@ -73,31 +75,25 @@ public class IPv4 {
     }
 
     /**
-     * @return Returns the IPv4 format in string.
+     * @return Returns if the IPv4 format is a valid IPv4 decimal.
      */
-    public int getBase()
+    public static boolean isValid(String ip)
     {
-        if (this.base == -1)
-        {
-            // Pattern regex = Pattern.compile("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$");
+        return ip.matches("^((\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5])))(\\/\\d+)?$");
+    }
 
-            if (this.ip_string.matches("^((\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5])))(\\/\\d+)?$"))
-            {
-                this.base = 10;
-            }
-            else if (this.ip_string.matches("^(([0-1]{8}\\.){3}[0-1]{8})(\\/\\d+)?$"))
-            {
-                this.base = 2;
-            }
-        }
-
-        return this.base;
+    /**
+     * @return Returns if the IPv4 format is a valid binary IPv4.
+     */
+    public static boolean isValidBinary(String ip)
+    {
+        return ip.matches("^([0-1]{8}\\.){3}[0-1]{8}$");
     }
 
     /**
      * Question 3.a
      */
-    public String getBase2()
+    public String toBase2()
     {
         if (this.ip_base2_string == null)
         {
@@ -125,7 +121,7 @@ public class IPv4 {
 
         for (int x = 0; x < ip_array.length; x++)
         {
-            newBase[x] = Integer.toString(Integer.valueOf(ip_array[x], 2));
+            newBase[x] = Integer.toString(Integer.parseInt(ip_array[x]), 10);
         }
 
         return String.join(".", newBase);
@@ -188,9 +184,9 @@ public class IPv4 {
         return this.ip_string.matches(".+\\/\\d+$");
     }
 
-    public String getMask()
+    public static boolean hasMask(String ip)
     {
-        return this.mask;
+        return IPv4.isValid(ip) && ip.matches(".+\\/\\d+$");
     }
 
     public String getSubNetwork(String subnet_mask)
@@ -200,7 +196,7 @@ public class IPv4 {
         // if (this.hasMask())
         // {
         IPv4 subip = new IPv4(subnet_mask);
-        String subip_base2_array[] = subip.getBase2().split("\\.");
+        String subip_base2_array[] = subip.toBase2().split("\\.");
 
         for (int x = 0; x < this.address_base2_array.length; ++x)
         {
