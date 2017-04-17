@@ -73,7 +73,7 @@ public class IPv4 {
         String base2[] = new String[this.ip_array.length];
 
         for (int x = 0; x < this.ip_array.length; x++) {
-            base2[x] = String.format("%08d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(this.ip_base2_array[x]))));
+            base2[x] = String.format("%08d", Integer.parseInt(Integer.toBinaryString(Integer.parseInt(this.ip_array[x]))));
         }
 
         return base2;
@@ -92,7 +92,7 @@ public class IPv4 {
      *
      * @return Returns the IPv4 class, A, B or C.
      */
-    private String getIPClass()
+    public String getIPClass()
     {
         // this method solves #3
 
