@@ -8,7 +8,7 @@ public class Prompt {
 
         System.out.print("Entre com o IP: ");
 
-        IP ip = new IP(reader.next());
+        IPv4 ip = new IPv4(reader.next());
 
         System.out.println();
 
