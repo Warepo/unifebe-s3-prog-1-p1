@@ -17,7 +17,6 @@ public class IPv4 {
             if (this.base == 10) {
 
                 this.ip_string = ip;
-                this.ip_array = ip.split("\\.");
 
                 System.out.println();
 
@@ -31,19 +30,25 @@ public class IPv4 {
 
             if (this.ip_string != null)
             {
-                this.ip_class = this.getIPClass();
-
                 if (this.hasMask())
                 {
-                    this.mask = this.getMask();
+                    String ipSplit[] = ip.split("\\/");
+
+                    this.ip_array = ipSplit[0].split("\\.");
+                    this.mask = ipSplit[1];
+                    this.ip_class = this.getIPClass();
+
 
                     String defaultMask = IPv4.getMaskByClass(this.ip_class);
 
                     if (this.mask != defaultMask)
                     {
-                        System.err.println("A máscara de IPv4 fornecida é inválida, a máscara correta é " + defaultMask + ".");
+                        System.err.println("A máscara de IPv4 fornecida (" + this.mask + ") é inválida, a máscara correta é " + defaultMask + ".");
                     }
 
+                } else {
+                    this.ip_array = ip.split("\\.");
+                    this.ip_class = this.getIPClass();
                 }
             }
         }
@@ -58,13 +63,35 @@ public class IPv4 {
 
         // Pattern regex = Pattern.compile("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$");
 
-        if (ip.matches("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$")) {
+        if (ip.matches("^((\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5])))(\\/\\d+)?$")) {
             base = 10;
         } else if (ip.matches("^([0-1]{8}\\.){3}[0-1]{8}$")) {
             base = 2;
         }
 
         return base;
+    }
+
+    /**
+     * @return Returns the IPv4 format in string.
+     */
+    public int getBase()
+    {
+        if (this.base == -1)
+        {
+            // Pattern regex = Pattern.compile("^(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))$");
+
+            if (this.ip_string.matches("^((\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5])))(\\/\\d+)?$"))
+            {
+                this.base = 10;
+            }
+            else if (this.ip_string.matches("^(([0-1]{8}\\.){3}[0-1]{8})(\\/\\d+)?$"))
+            {
+                this.base = 2;
+            }
+        }
+
+        return this.base;
     }
 
     /**
@@ -146,7 +173,7 @@ public class IPv4 {
 
     public String getMask()
     {
-        return this.mask != null ? this.mask : this.ip_string.split("\\/")[1];
+        return this.mask;
     }
 
 }
