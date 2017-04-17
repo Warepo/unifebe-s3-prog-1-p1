@@ -2,17 +2,13 @@
 
 ## Tabela de Funcionalidades
 
-| Nº | Nome | Descrição |
-|:--:|:--|:--|
-| 1 | Inserir | pede o número de matricula, o nome do funcionário e coloca na lista |
-| 2 | Retirar | retira o funcionário da lista e mostra o nome do mesmo |
-| 3 | Mostrar | mostra o número de matricula de todos os funcionários |
-| 4 | Onde está | pede o número de matricula e diz em que posição da fila está o funcionário (Não é a posição do array) |
-| 5 | Quem é | pede o número de matricula e informa o nome deste funcionário |
-| 6 | Cabeça | mostra o nome do funcionário que está na cabeça da fila |
-| 7 | Detonar | destrói a lista |
-| 8 | Quantos | diz quantos funcionários estão na lista |
-| 9 | Vazar | Pica a mula! |
+| Nº | Nome |
+|:--:|:--|
+| 1 | x |
+| 2 | x |
+| 3 | Inserir um IP comnúmeros e pontuação |
+| 4 | Aceitar uma máscara de IP no seguinte formato: `10.2.3.1*/24*` e validá-la. |
+| 5 | Calcular a rede a qual o IP fornecido pertence. |
 
 ## Observações
 
@@ -28,10 +24,13 @@
 
 ```bash
 C:\path\to\project\
+$ mkdir build
+
+C:\path\to\project\
 $ javac -encoding utf8 ./source/*.java -d ./build
 
-C:\path\to\project\source\
-$ cd ..\build
+C:\path\to\project\
+$ cd build
 
 C:\path\to\project\build\
 $ java ClassName
