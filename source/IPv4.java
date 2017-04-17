@@ -1,3 +1,5 @@
+package p1;
+
 public class IPv4 {
 
     private String ip_string; // decimal
@@ -18,11 +20,12 @@ public class IPv4 {
             {
                 this.ip_string = ip;
             }
-            else if (this.base == 2)
+            else
             {
                 // this.address_base2_array = ip.split("\\.");
                 System.err.println("O IPv4 de entrada deve ser escrito em base decimal.");
-                // return false;
+                System.err.println("Respeitando o formato: 255.255.255.255.");
+                return;
             }
 
             if (this.ip_string != null)
