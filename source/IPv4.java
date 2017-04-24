@@ -93,7 +93,7 @@ public class IPv4 {
     /**
      * Question 3.a
      */
-    public String toBase2()
+    public String decimal2binary()
     {
         if (this.ip_base2_string == null)
         {
@@ -112,16 +112,36 @@ public class IPv4 {
     }
 
     /**
-     * Question 5.b
+     * A wrapper method that converts a base2 IP to a base10 IP.
+     * @return Returns the decimal IP address as string.
      */
-    public static String toBase10(String ip)
+    public String binary2decimal()
     {
-        String ip_array[] = ip.split("\\.");
+        return this.binary2decimal(this.address_array);
+    }
+
+    /**
+     * A wrapper method that converts a base2 IP to a base10 IP.
+     * @param {String} ip : The string IP address to be converted.
+     * @return Returns the decimal IP address as string.
+     */
+    public static String binary2decimal(String ip)
+    {
+        return IPv4.binary2decimal(ip.split("\\."));
+    }
+
+    /**
+     * Converts a base2 IP to a base10 IP.
+     * @param {String} ip_array : The segmented IP address to be converted.
+     * @return Returns the decimal IP address as string.
+     */
+    private static String binary2decimal(String[] ip_array)
+    {
         String newBase[] = new String[ip_array.length];
 
         for (int x = 0; x < ip_array.length; x++)
         {
-            newBase[x] = Integer.toString(Integer.parseInt(ip_array[x]), 10);
+            newBase[x] = Integer.toString(Integer.valueOf(ip_array[x], 2));
         }
 
         return String.join(".", newBase);
@@ -196,7 +216,7 @@ public class IPv4 {
         // if (this.hasMask())
         // {
         IPv4 subip = new IPv4(subnet_mask);
-        String subip_base2_array[] = subip.toBase2().split("\\.");
+        String subip_base2_array[] = subip.decimal2binary().split("\\.");
 
         for (int x = 0; x < this.address_base2_array.length; ++x)
         {
